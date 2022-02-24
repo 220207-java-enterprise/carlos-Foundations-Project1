@@ -1,8 +1,12 @@
 # Default ignored files
 /shelf/
 
-/.idea/
+.idea/
 pom.xml
-/target/
+target/
 /src/main/resources/
 /src/test/resources/
+*.iml/
+out/
+*.class
+*.jar

@@ -1,13 +1,13 @@
 package com.revature.erm;
 
+import com.revature.erm.models.AppUser;
 import com.revature.erm.util.ConnectionFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class ErmDriver {
     public static void main(String[] args) throws SQLException {
@@ -46,8 +46,8 @@ public class ErmDriver {
                     System.out.print("Password: ");
                     String passWord = consoleReader.readLine();
                     //TODO: Once entered successfully as admin, allow to ADD new user, UPDATE target user?, DELETE target user
-
-                    //TODO: REGISTER new user
+                    //if(valid userName and password found in database with Admin id) then show Admin screen
+                    //TODO: ADD new user
                     System.out.print("[option] Add new user\n");
 
                     System.out.print("First name: ");
@@ -65,7 +65,29 @@ public class ErmDriver {
                     System.out.print("Password: ");
                     String password = consoleReader.readLine();
 
-                    System.out.printf("Registration info provided: %s %s %s %s %s", firstName, lastName, email, username, password);
+                    AppUser newUser = new AppUser(firstName, lastName, email, username, password);
+                    System.out.printf("Registration info provided: %s\n", newUser);
+                    //TODO: Validation for inputs given
+                    //TODO: Add user to SQL database(persistence logic)
+                    newUser.setId(UUID.randomUUID().toString());//creates random UUID converted to String
+                    String fileString = newUser.toFileString() + "\n";
+                    System.out.println(fileString);
+
+                    File userDataFile = new File("data/users.txt");
+                    FileWriter dataWriter = new FileWriter(userDataFile, true);//'true' appends data(instead of overriding file each time)
+                    dataWriter.write(fileString);
+                    dataWriter.close();
+
+                    //TODO: UPDATE target user
+                    System.out.println("[option] Update target user\n");
+
+                    System.out.println("Please provide an existing user's credentials to update\n");
+                    System.out.print("Username: ");
+                    System.out.println("Password: ");
+                    //if (valid userName and password found in database with Employee id OR Finance manager id)
+                    //then
+
+
                     break;
 
                 default:

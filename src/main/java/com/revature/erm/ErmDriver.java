@@ -13,10 +13,11 @@ public class ErmDriver {
     public static void main(String[] args) throws SQLException {
 
         String welcomeMenu = "Expense Reimbursement System\n" +
-                            "Please make a selection below:\n" +
+                            "Continue as:\n" +
                             "1) Employee\n" +
                             "2) Finance Manager\n" +
                             "3) Admin\n" +
+                            "q) Exit application\n" +
                             "> ";
 
         System.out.print(welcomeMenu);
@@ -30,7 +31,18 @@ public class ErmDriver {
             switch (userSelection) {
                 case "1":
                     System.out.println("You have entered as an Employee");
-                    System.out.println("Login: ");
+                    //UI Logic
+                    System.out.println("Please provide credentials to login:");
+
+                    System.out.println("Username: ");
+                    String username = consoleReader.readLine();
+
+                    System.out.println("Password: ");
+                    String password = consoleReader.readLine();
+
+                    //Business/Validation logic
+
+                    //Persistence logic
 
                     break;
 
@@ -67,7 +79,15 @@ public class ErmDriver {
 
                     AppUser newUser = new AppUser(firstName, lastName, email, username, password);
                     System.out.printf("Registration info provided: %s\n", newUser);
-                    //TODO: Validation for inputs given
+                    //TODO: Validate that the provided username and email are not already taken
+                    if (!isUserValid(newUser)) {
+                        throw new RuntimeException("Bad registration details given");//this will halt the app for now
+                    }
+
+
+
+
+
                     //TODO: Add user to SQL database(persistence logic)
                     newUser.setId(UUID.randomUUID().toString());//creates random UUID converted to String
                     String fileString = newUser.toFileString() + "\n";
@@ -90,6 +110,10 @@ public class ErmDriver {
 
                     break;
 
+                case "q":
+                    System.out.println("You have quit the application.");
+                    return;
+
                 default:
                     System.out.println("You have made an incorrect selection! >:(");
             }
@@ -97,5 +121,29 @@ public class ErmDriver {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    //Validation for user. Includes first name, last name, email, username, and password
+    private static boolean isUserValid(AppUser appUser) {
+        //First and last names can not have empty strings
+        if (appUser.getFirstName().trim().equals("") || appUser.getLastName().trim().equals("")) {
+            System.out.println("Bad first or last name. No empty values allowed.");
+            return false;
+        }
+        //Usernames must be 3-8 characters in length and only contain alphanumeric values
+        if (!appUser.getUsername().matches("^[a-zA-Z0-9]{3,8}")) {
+            System.out.println("Username must be 3-8 characters.");
+            return false;
+        }
+        //Password must have minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
+        if (!appUser.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
+            System.out.println("Password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.");
+            return false;
+        }
+        //Simple email validation
+        if (!appUser.getEmail().matches("^[^@\\s]+@[^@\\s.]+\\.[^@.\\s]+$")) {
+            System.out.println("Invalid email input.");
+            return false;
+        }
+        return true;
     }
 }

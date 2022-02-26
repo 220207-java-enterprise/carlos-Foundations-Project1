@@ -12,7 +12,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="carlos-Foundations-Project1" target="1.8" />
-      <module name="foundations_project" target="1.8" />
+      <module name="foundations_project" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

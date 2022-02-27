@@ -1,3 +1,6 @@
-a431db64-12a0-4942-adfc-5a62e59d4db1:Carlos:Iniguez:carlos.iniguez17@gmail.com:one5los:p4$$WORD
 e6da5c5b-98c9-4ff4-8f29-47bd66e82fc0:Tracy:Meza:tmeza@gmail.com:tmeza510:p4$$WORD
 1074cbe3-7389-4abd-9852-a2b353d6dd99:Wezley:Singleton:wezley.singleton@revature.com:wezingle:p4$$WORD
+669e870f-d575-41f1-8434-5973eecd47cd:Bob:Bailey:bobbailey@gmail.com:bbailey:p4$$WORD
+94d10831-f217-455e-ad7f-d2e43c7c2f0c:Carlos:Iniguez:carlos.iniguez@revature.com:one5los:p4$$WORD
+ff2b3045-daed-411d-a061-c0f21118e198:Charles:Cantrell:charles.cantrell@gmail.com:chant:p4$$WORD
+30e54f56-401c-466c-9577-03da0dbc0336:Testy:McTesterson:testy.mcterson@revature.com:mctest:p4$$WORD

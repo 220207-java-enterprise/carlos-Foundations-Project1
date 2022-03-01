@@ -4,7 +4,7 @@ import com.revature.erm.models.Users;
 
 public class Principal {
 
-    private String id;
+    private String user_id;
     private String username;
     private String role;
 
@@ -13,17 +13,17 @@ public class Principal {
     }
 
     public Principal(Users user) {
-        this.id = user.getUser_id();
+        this.user_id = user.getUser_id();
         this.username = user.getUsername();
-        this.role = user.getRole_id().getRole_id();
+        this.role = user.getRole_id().getRole();
     }
 
-    public String getId() {
-        return id;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     public String getUsername() {
@@ -45,10 +45,9 @@ public class Principal {
     @Override
     public String toString() {
         return "Principal{" +
-                "id='" + id + '\'' +
+                "user_id='" + user_id + '\'' +
                 ", username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 '}';
     }
-
 }

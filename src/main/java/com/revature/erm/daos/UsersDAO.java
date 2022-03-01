@@ -14,10 +14,10 @@ public class UsersDAO implements CrudDAO<Users> {
 
 
     private final String rootSelect = "SELECT " +
-            "eu.user_id, eu.username, eu.email, eu.password, eu.given_name, eu.surname, eu.is_active, eu.role_id, eur.role" +
+            "eu.user_id, eu.username, eu.email, eu.password, eu.given_name, eu.surname, eu.is_active, eu.role_id, eur.role " +
             "FROM ers_users eu " +
             "JOIN ers_user_roles eur " +
-            "ON eu.role_id = eur.role_id  ";
+            "ON eu.role_id = eur.role_id ";
 
     //-------------------------------------find user by username------------------------------------------//
 
@@ -108,6 +108,38 @@ public class UsersDAO implements CrudDAO<Users> {
             }
 
         } catch (SQLException e) {
+            throw new DataSourceException(e);
+        }
+
+        return authUser;
+    }
+
+    //----------------------------find user by role------------------------------//
+
+    public Users findUserByRole(String role) {
+
+        Users authUser = null;
+
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+
+            PreparedStatement pstmt = conn.prepareStatement(rootSelect + "WHERE role = ?");
+            pstmt.setString(1, role);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                authUser = new Users();
+                authUser.setUser_id(rs.getString("user_id"));
+                authUser.setUsername(rs.getString("username"));
+                authUser.setEmail(rs.getString("email"));
+                authUser.setPassword(rs.getString("password"));
+                authUser.setGiven_name(rs.getString("given_name"));
+                authUser.setSurname(rs.getString("surname"));
+                authUser.setIs_active(rs.getBoolean("is_active"));
+                authUser.setRole_id(new UserRoles(rs.getString("role_id"), rs.getString("role")));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
             throw new DataSourceException(e);
         }
 

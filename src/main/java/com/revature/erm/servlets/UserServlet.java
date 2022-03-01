@@ -33,6 +33,9 @@ public class UserServlet extends HttpServlet {
         this.mapper = mapper;
     }
 
+    //----------------------Send a doGet request(READ request)---------------------//
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -47,25 +50,26 @@ public class UserServlet extends HttpServlet {
         // get users (all, by id, by w/e)
         HttpSession session = req.getSession(false);
         if (session == null) {
-            resp.setStatus(401);
+            resp.setStatus(401);//UNAUTHORIZED(client side)
             return;
         }
+
         Principal requester = (Principal) session.getAttribute("authUser");
 
-//        if (!requester.getRole().equals("ADMIN")) {
-//            resp.setStatus(403); // FORBIDDEN
-//            return;
-//        }TODO
-
+        if (!requester.getRole().equals("ADMIN")) {
+            resp.setStatus(403); // FORBIDDEN(client side)
+            return;
+        }
         List<AppUserResponse> users = userService.getAllUsers();
         String payload = mapper.writeValueAsString(users);
         resp.setContentType("application/json");
         resp.getWriter().write(payload);
-        resp.setStatus(200);
+        resp.setStatus(200);//OK(success)
 
     }
 
-        // registration endpoint
+    //----------------------Send a doPost request(CREATE request)---------------------//
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -75,21 +79,23 @@ public class UserServlet extends HttpServlet {
 
             NewUserRequest newUserRequest = mapper.readValue(req.getInputStream(), NewUserRequest.class);
             Users newUser = userService.register(newUserRequest);
-            resp.setStatus(201); // CREATED
+            resp.setStatus(201); // CREATED(success)
             resp.setContentType("application/json");
             String payload = mapper.writeValueAsString(new ResourceCreationResponse(newUser.getUser_id()));
             respWriter.write(payload);
 
         } catch (InvalidRequestException | DatabindException e) {
-            resp.setStatus(400); // BAD REQUEST
+            resp.setStatus(400); // BAD REQUEST error(client side)
         } catch (ResourceConflictException e) {
-            resp.setStatus(409); // CONFLICT
+            resp.setStatus(409); // CONFLICT error(client side)
         } catch (Exception e) {
-            e.printStackTrace(); // include for debugging purposes; ideally log it to a file
-            resp.setStatus(500);
+            e.printStackTrace();//debugging
+            resp.setStatus(500);//INTERNAL SERVER ERROR
         }
 
     }
+
+    //----------------------Check availability for username and email---------------------//
 
     protected void checkAvailability(HttpServletRequest req, HttpServletResponse resp) {
         String usernameValue = req.getParameter("username");

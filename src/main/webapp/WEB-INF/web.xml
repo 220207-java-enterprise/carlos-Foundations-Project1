@@ -4,20 +4,27 @@
              http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <display-name>Hello, Servlets!</display-name>
+    <display-name>ERS-Project!</display-name>
 
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
-
-    <servlet>
-        <servlet-name>TestServlet</servlet-name>
-        <servlet-class>com.revature.erm.servlets.TestServlets</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>TestServlet</servlet-name>
-        <url-pattern>/test</url-pattern>
-    </servlet-mapping>
+    <listener>
+        <listener-class>com.revature.erm.util.ContextLoaderListener</listener-class>
+    </listener>
 
 </web-app>
+
+<!--Testing out-->
+<!--<display-name>Hello, Servlets!</display-name>-->
+
+<!--<welcome-file-list>-->
+<!--<welcome-file>index.html</welcome-file>-->
+<!--</welcome-file-list>-->
+
+<!--<servlet>-->
+<!--<servlet-name>TestServlet</servlet-name>-->
+<!--<servlet-class>com.revature.erm.servlets.TestServlets</servlet-class>-->
+<!--</servlet>-->
+
+<!--<servlet-mapping>-->
+<!--<servlet-name>TestServlet</servlet-name>-->
+<!--<url-pattern>/test</url-pattern>-->
+<!--</servlet-mapping>-->

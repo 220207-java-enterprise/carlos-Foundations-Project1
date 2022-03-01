@@ -3,6 +3,7 @@ package com.revature.erm.util.exceptions;
 public class AuthenticationException extends ResourceNotFoundException {
 
     public AuthenticationException() {
-//        super("No user found using the provided credentials!");
+        super("No user found using the provided credentials.");
     }
+
 }

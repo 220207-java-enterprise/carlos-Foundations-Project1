@@ -1,4 +1,4 @@
-package com.revature.erm;
+package com.revature.erm.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

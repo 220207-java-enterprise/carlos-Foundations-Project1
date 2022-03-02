@@ -6,7 +6,7 @@ import com.revature.erm.dtos.requests.NewUserRequest;
 import com.revature.erm.dtos.responses.AppUserResponse;
 import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
-//import com.revature.erm.services.TokenService;TODO
+import com.revature.erm.services.TokenService;
 import com.revature.erm.models.Users;
 import com.revature.erm.services.UsersService;
 import com.revature.erm.util.exceptions.InvalidRequestException;
@@ -16,7 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -24,11 +23,12 @@ import java.util.List;
 // Mapping: /users/*
 public class UserServlet extends HttpServlet {
 
-    //    private final TokenService tokenService;
+    private final TokenService tokenService;
     private final UsersService userService;
     private final ObjectMapper mapper;
 
-    public UserServlet(UsersService userService, ObjectMapper mapper) {
+    public UserServlet(TokenService tokenService, UsersService userService, ObjectMapper mapper) {
+        this.tokenService = tokenService;
         this.userService = userService;
         this.mapper = mapper;
     }
@@ -48,13 +48,12 @@ public class UserServlet extends HttpServlet {
         // TODO implement some security logic here to protect sensitive operations
 
         // get users (all, by id, by w/e)
-        HttpSession session = req.getSession(false);
-        if (session == null) {
-            resp.setStatus(401);//UNAUTHORIZED(client side)
+        Principal requester = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+
+        if (requester == null) {
+            resp.setStatus(401);
             return;
         }
-
-        Principal requester = (Principal) session.getAttribute("authUser");
 
         if (!requester.getRole().equals("ADMIN")) {
             resp.setStatus(403); // FORBIDDEN(client side)

@@ -11,7 +11,6 @@ import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -62,8 +61,9 @@ public class UsersService {
 
         // TODO encrypt provided password before storing in the database
 
-        newUser.setUser_id(UUID.randomUUID().toString());
+        newUser.setUser_id(UUID.randomUUID().toString());//sets random UUID to new employee..TODO do I have to specify an ID when sending a request?
         newUser.setRole_id(new UserRoles("7c3521f5-ff75-4e8a-9913-01d15ee4dc99", "EMPLOYEE")); // All newly registered users start as BASIC_USER
+        newUser.setIs_active(false);
         userDAO.save(newUser);
 
         return newUser;

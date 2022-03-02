@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.responses.Principal;
-import com.revature.erm.models.Users;//TODO
-//import com.revature.erm.services.TokenService;TODO
+import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UsersService;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
@@ -14,18 +13,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class AuthServlet extends HttpServlet {
 
-//    private final TokenService tokenService;
+    private final TokenService tokenService;
     private final UsersService userService;
     private final ObjectMapper mapper;
 
-    public AuthServlet(UsersService userService, ObjectMapper mapper) {
-//        this.tokenService = tokenService;
+    public AuthServlet(TokenService tokenService, UsersService userService, ObjectMapper mapper) {
+        this.tokenService = tokenService;
         this.userService = userService;
         this.mapper = mapper;
     }
@@ -47,12 +45,12 @@ public class AuthServlet extends HttpServlet {
             Principal principal = new Principal(userService.login(loginRequest));
             String payload = mapper.writeValueAsString(principal);
 
-            // Stateful session management
-            HttpSession httpSession = req.getSession();
-            httpSession.setAttribute("authUser", principal);
+//             Stateful session management
+//            HttpSession httpSession = req.getSession();
+//            httpSession.setAttribute("authUser", principal);
 
-//            String token = tokenService.generateToken(principal);
-//            resp.setHeader("Authorization", token);
+            String token = tokenService.generateToken(principal);
+            resp.setHeader("Authorization", token);
             resp.setContentType("application/json");
             writer.write(payload);
 

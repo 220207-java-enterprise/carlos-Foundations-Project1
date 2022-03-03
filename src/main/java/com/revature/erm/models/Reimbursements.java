@@ -1,10 +1,13 @@
 package com.revature.erm.models;
 
+import java.sql.Timestamp;
+
 public class Reimbursements {
+
     private String reimb_id;
     private int amount;
-    private int submitted;
-    private int resolved;
+    private Timestamp submitted;
+    private Timestamp resolved;
     private String description;
     private byte receipt;
     private String payment_id;
@@ -17,7 +20,7 @@ public class Reimbursements {
         super();
     }
 
-    public Reimbursements(String reimb_id, int amount, int submitted, int resolved, String description, byte receipt, String payment_id, String author_id, String resolver_id, String status_id, String type_id) {
+    public Reimbursements(String reimb_id, int amount, Timestamp submitted, Timestamp resolved, String description, byte receipt, String payment_id, String author_id, String resolver_id, String status_id, String type_id) {
         this.reimb_id = reimb_id;
         this.amount = amount;
         this.submitted = submitted;
@@ -47,19 +50,19 @@ public class Reimbursements {
         this.amount = amount;
     }
 
-    public int getSubmitted() {
+    public Timestamp getSubmitted() {
         return submitted;
     }
 
-    public void setSubmitted(int submitted) {
+    public void setSubmitted(Timestamp submitted) {
         this.submitted = submitted;
     }
 
-    public int getResolved() {
+    public Timestamp getResolved() {
         return resolved;
     }
 
-    public void setResolved(int resolved) {
+    public void setResolved(Timestamp resolved) {
         this.resolved = resolved;
     }
 
@@ -121,7 +124,7 @@ public class Reimbursements {
 
     @Override
     public String toString() {
-        return "reimbursements{" +
+        return "Reimbursements{" +
                 "reimb_id='" + reimb_id + '\'' +
                 ", amount=" + amount +
                 ", submitted=" + submitted +

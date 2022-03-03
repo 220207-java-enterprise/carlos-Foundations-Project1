@@ -1,26 +1,39 @@
 package com.revature.erm.models;
 
+import com.revature.erm.util.Bytea;
+
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Reimbursements {
 
     private String reimb_id;
-    private int amount;
+    private double amount;
     private Timestamp submitted;
     private Timestamp resolved;
     private String description;
-    private byte receipt;
+    private Bytea receipt;
     private String payment_id;
     private String author_id;
     private String resolver_id;
-    private String status_id;
-    private String type_id;
+    private ReimbursementStatuses status;
+    private ReimbursementTypes type;
 
     public Reimbursements() {
         super();
     }
 
-    public Reimbursements(String reimb_id, int amount, Timestamp submitted, Timestamp resolved, String description, byte receipt, String payment_id, String author_id, String resolver_id, String status_id, String type_id) {
+    public Reimbursements(String reimb_id,
+                          double amount,
+                          Timestamp submitted,
+                          Timestamp resolved,
+                          String description,
+                          Bytea receipt,
+                          String payment_id,
+                          String author_id,
+                          String resolver_id,
+                          ReimbursementStatuses status,
+                          ReimbursementTypes type) {
         this.reimb_id = reimb_id;
         this.amount = amount;
         this.submitted = submitted;
@@ -30,8 +43,8 @@ public class Reimbursements {
         this.payment_id = payment_id;
         this.author_id = author_id;
         this.resolver_id = resolver_id;
-        this.status_id = status_id;
-        this.type_id = type_id;
+        this.status = status;
+        this.type = type;
     }
 
     public String getReimb_id() {
@@ -42,11 +55,11 @@ public class Reimbursements {
         this.reimb_id = reimb_id;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -74,11 +87,11 @@ public class Reimbursements {
         this.description = description;
     }
 
-    public byte getReceipt() {
+    public Bytea getReceipt() {
         return receipt;
     }
 
-    public void setReceipt(byte receipt) {
+    public void setReceipt(Bytea receipt) {
         this.receipt = receipt;
     }
 
@@ -106,20 +119,33 @@ public class Reimbursements {
         this.resolver_id = resolver_id;
     }
 
-    public String getStatus_id() {
-        return status_id;
+    public ReimbursementStatuses getStatus() {
+        return status;
     }
 
-    public void setStatus_id(String status_id) {
-        this.status_id = status_id;
+    public void setStatus(ReimbursementStatuses status) {
+        this.status = status;
     }
 
-    public String getType_id() {
-        return type_id;
+    public ReimbursementTypes getType() {
+        return type;
     }
 
-    public void setType_id(String type_id) {
-        this.type_id = type_id;
+    public void setType(ReimbursementTypes type) {
+        this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reimbursements that = (Reimbursements) o;
+        return Double.compare(that.amount, amount) == 0 && Objects.equals(reimb_id, that.reimb_id) && Objects.equals(submitted, that.submitted) && Objects.equals(resolved, that.resolved) && Objects.equals(description, that.description) && Objects.equals(receipt, that.receipt) && Objects.equals(payment_id, that.payment_id) && Objects.equals(author_id, that.author_id) && Objects.equals(resolver_id, that.resolver_id) && Objects.equals(status, that.status) && Objects.equals(type, that.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reimb_id, amount, submitted, resolved, description, receipt, payment_id, author_id, resolver_id, status, type);
     }
 
     @Override
@@ -134,8 +160,8 @@ public class Reimbursements {
                 ", payment_id='" + payment_id + '\'' +
                 ", author_id='" + author_id + '\'' +
                 ", resolver_id='" + resolver_id + '\'' +
-                ", status_id='" + status_id + '\'' +
-                ", type_id='" + type_id + '\'' +
+                ", status=" + status +
+                ", type=" + type +
                 '}';
     }
 }

@@ -71,5 +71,33 @@ public class NewReimbursementRequest {
 
     public Reimbursements extractReimbursement() {
 
+        String reimb_id = UUID.randomUUID().toString();//sets random UUID to new reimbursement id
+       ReimbursementStatuses status = new ReimbursementStatuses("0", "PENDING"); // All new reimbursement requests set status_id to 0 and status to pending
+
+        ReimbursementTypes type = new ReimbursementTypes(this.type, this.type);
+        return new Reimbursements(
+                reimb_id,
+                this.amount,
+                new Timestamp(System.currentTimeMillis()),
+                new Timestamp(0),
+                this.description,
+                this.receipt,
+                null,
+                this.author_id,
+                null,
+                status,
+                type);
+
+    }
+
+    @Override
+    public String toString() {
+        return "NewReimbursementRequest{" +
+                "amount=" + amount +
+                ", description='" + description + '\'' +
+                ", receipt=" + receipt +
+                ", author_id='" + author_id + '\'' +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

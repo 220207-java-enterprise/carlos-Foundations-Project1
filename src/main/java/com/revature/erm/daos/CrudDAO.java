@@ -12,6 +12,6 @@ public interface CrudDAO<T> {
 
     void update(T updatedObj);
 
-    void deleteById(String id);//TODO Ryan said he used (T objectToBeDeleted)
+    void deleteById(T objectToBeDeleted);//TODO Ryan said he used (T objectToBeDeleted)
 }
 

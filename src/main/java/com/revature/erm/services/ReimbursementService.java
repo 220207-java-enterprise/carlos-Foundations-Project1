@@ -22,11 +22,8 @@ public class ReimbursementService {
 
         Reimbursements newReimbursement = newReimbursementRequest.extractReimbursement();
 
-        newReimbursement.setReimb_id(UUID.randomUUID().toString());//sets random UUID to new reimbursement
-        newReimbursement.setStatus_id(new ReimbursementStatuses("0", "PENDING")); // All newly registered users start as BASIC_USER
-        newUser.setIs_active(false);
         reimbursementDAO.save(newReimbursement);
 
-        return newUser;
+        return newReimbursement;
     }
 }

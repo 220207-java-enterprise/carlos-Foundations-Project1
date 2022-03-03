@@ -247,7 +247,7 @@ public class UsersDAO implements CrudDAO<Users> {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
             conn.setAutoCommit(false);
-            PreparedStatement pstmt = conn.prepareStatement("UPDATE erm_users " +
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE ers_users " +
                     "SET username = ?, " +
                     "email = ?, " +
                     "password = ?, " +
@@ -280,13 +280,13 @@ public class UsersDAO implements CrudDAO<Users> {
     //-------------------------------------delete user by id--------------------------------------------//
 
     @Override
-    public void deleteById(String id) {
+    public void deleteById(Users idToDelete) {
 
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
             conn.setAutoCommit(false);
             PreparedStatement pstmt = conn.prepareStatement("DELETE FROM ers_users WHERE user_id = ?");
-            pstmt.setString(1, id);
+            pstmt.setString(1, idToDelete.getRole_id().getRole_id());
 
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted != 1) {

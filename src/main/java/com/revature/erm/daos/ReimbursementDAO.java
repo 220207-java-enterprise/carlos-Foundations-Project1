@@ -30,18 +30,17 @@ public class ReimbursementDAO implements CrudDAO<Reimbursements>{
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
             conn.setAutoCommit(false);
-            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ers_reimbursements VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ers_reimbursements VALUES (?, ?, ?, ?, ?, NULL, ?, ?, ?, ?, ?)");
             pstmt.setString(1, newReimbursement.getReimb_id());
             pstmt.setDouble(2, newReimbursement.getAmount());
             pstmt.setTimestamp(3, newReimbursement.getSubmitted());
             pstmt.setTimestamp(4, newReimbursement.getResolved());
             pstmt.setString(5, newReimbursement.getDescription());
-            pstmt.setBinaryStream(6, newReimbursement.getReceipt().getBinaryStream());
-            pstmt.setString(7, newReimbursement.getPayment_id());
-            pstmt.setString(8, newReimbursement.getAuthor_id());
-            pstmt.setString(9, newReimbursement.getResolver_id());
-            pstmt.setString(10, newReimbursement.getStatus().getStatus_id());
-            pstmt.setString(11, newReimbursement.getType().getType_id());
+            pstmt.setString(6, newReimbursement.getPayment_id());
+            pstmt.setString(7, newReimbursement.getAuthor_id());
+            pstmt.setString(8, newReimbursement.getResolver_id());
+            pstmt.setString(9, newReimbursement.getStatus().getStatus_id());
+            pstmt.setString(10, newReimbursement.getType().getType_id());
 
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted != 1) {
@@ -163,6 +162,7 @@ public class ReimbursementDAO implements CrudDAO<Reimbursements>{
 
     }
 
+    //-----------------------------delete reimbursement status and type by respective id--------------------//
     //-----------------------------delete reimbursement status and type by respective id--------------------//
     @Override
     public void deleteById(Reimbursements deleteReimbursement) {

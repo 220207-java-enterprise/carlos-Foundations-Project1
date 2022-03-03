@@ -1,6 +1,7 @@
 package com.revature.erm.dtos.responses;
 
 import com.revature.erm.models.Users;
+import com.revature.erm.models.Reimbursements;
 
 public class AppUserResponse {
 

@@ -4,6 +4,7 @@ import com.revature.erm.daos.ReimbursementDAO;
 import com.revature.erm.daos.UsersDAO;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
 import com.revature.erm.dtos.requests.NewUserRequest;
+import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.ReimbursementStatuses;
 import com.revature.erm.models.Reimbursements;
 import com.revature.erm.models.UserRoles;
@@ -18,12 +19,18 @@ public class ReimbursementService {
 
     private ReimbursementDAO reimbursementDAO; // a dependency of ReimbursementService
 
-    public Reimbursements saveNewReimbursement(NewReimbursementRequest newReimbursementRequest) throws IOException {
+    public ReimbursementService(ReimbursementDAO reimbursementDAO) {
+        this.reimbursementDAO = reimbursementDAO;
+    }
+
+    public ResourceCreationResponse saveNewReimbursement(NewReimbursementRequest newReimbursementRequest) throws IOException {
 
         Reimbursements newReimbursement = newReimbursementRequest.extractReimbursement();
 
+        // TODO validate that the data provided in the new reimburesment request is valid
+
         reimbursementDAO.save(newReimbursement);
 
-        return newReimbursement;
+        return new ResourceCreationResponse(newReimbursement.getReimb_id());
     }
 }

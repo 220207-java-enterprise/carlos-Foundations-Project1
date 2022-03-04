@@ -5,6 +5,7 @@ import com.revature.erm.daos.UsersDAO;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
 import com.revature.erm.dtos.requests.NewUserRequest;
 import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
+import com.revature.erm.dtos.responses.AppUserResponse;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.ReimbursementStatuses;
 import com.revature.erm.models.Reimbursements;
@@ -14,7 +15,10 @@ import com.revature.erm.util.exceptions.InvalidRequestException;
 import com.revature.erm.util.exceptions.ResourceConflictException;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ReimbursementService {
 
@@ -46,5 +50,9 @@ public class ReimbursementService {
         reimbursementDAO.update(reimbursementToBeUpdated);
 
         return new ResourceCreationResponse(reimbursementToBeUpdated.getReimb_id());
+    }
+
+    public List<Reimbursements> getAllReimbursements() {
+        return reimbursementDAO.getAll().stream().collect(Collectors.toList());
     }
 }

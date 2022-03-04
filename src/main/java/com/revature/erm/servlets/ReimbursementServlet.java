@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
 import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
+import com.revature.erm.dtos.responses.AppUserResponse;
 import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.Reimbursements;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class ReimbursementServlet extends HttpServlet {
 
@@ -34,12 +36,46 @@ public class ReimbursementServlet extends HttpServlet {
         this.reimbursementService = reimbursementService;
         this.mapper = mapper;
     }
-    //TODO: uncomment toGet method for reimbursement
-//    @Override
-//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        System.out.println(req.getServletContext().getInitParameter("programmaticParam"));
-//    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        Principal requesterForReimb = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
 //
+//        if (requesterForReimb.getRole().equals("EMPLOYEE")) {
+//            resp.setStatus(403);//forbidden
+//            return;
+//        }
+//        PrintWriter writer = resp.getWriter();
+//        List<Reimbursements> users = reimbursementService.getAllReimbursements();
+//
+//        String payload = mapper.writeValueAsString(users);
+//        resp.setContentType("application/json");
+//        writer.write(payload);
+
+        // get users (all, by id, by w/e)
+        Principal requester = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+
+        if (requester == null) {
+            resp.setStatus(401);
+            return;
+        }
+
+        if (!requester.getRole().equals("FINANCE_MANAGER")) {
+            resp.setStatus(403); // FORBIDDEN(client side)
+            return;
+        }
+
+        System.out.println("test1");
+        List<Reimbursements> users = reimbursementService.getAllReimbursements();
+        System.out.println("test2");
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        String payload = mapper.writeValueAsString(users);
+        System.out.println("test3");
+        resp.setContentType("application/json");
+        resp.getWriter().write(payload);
+        resp.setStatus(200);//OK(success)
+    }
+
 
     //-----------------------------create a reimbursement(EMPLOYEE ONLY)--------------------------//
     @Override

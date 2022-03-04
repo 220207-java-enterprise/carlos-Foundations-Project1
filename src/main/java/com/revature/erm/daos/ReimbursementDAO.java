@@ -106,12 +106,12 @@ public class ReimbursementDAO implements CrudDAO<Reimbursements>{
                 reimbursement.setReimb_id(rs.getString("reimb_id"));
                 reimbursement.setAmount(rs.getInt("amount"));
                 reimbursement.setSubmitted(rs.getTimestamp("submitted"));
-                reimbursement.setResolved(rs.getTimestamp("resolved"));
+//                reimbursement.setResolved(rs.getTimestamp("resolved"));//TODO:had to comment out due to NULL values
                 reimbursement.setDescription(rs.getString("description"));
-                reimbursement.setReceipt(new Bytea(rs.getBytes("receipt")));//TODO: make sure this is correct syntax(should be?)
-                reimbursement.setPayment_id(rs.getString("payment_id"));
+//                reimbursement.setReceipt(new Bytea(rs.getBytes("receipt")));//TODO:had to comment out due to NULL values
+//                reimbursement.setPayment_id(rs.getString("payment_id"));//TODO:had to comment out due to NULL values
                 reimbursement.setAuthor_id(rs.getString("author_id"));
-                reimbursement.setResolver_id(rs.getString("resolver_id"));
+//                reimbursement.setResolver_id(rs.getString("resolver_id"));TODO:had to comment out due to NULL values
                 reimbursement.setStatus(new ReimbursementStatuses(rs.getString("status_id"), rs.getString("status")));
                 reimbursement.setType(new ReimbursementTypes(rs.getString("type_id"), rs.getString("type")));
                 reimbursements.add(reimbursement);
@@ -133,7 +133,7 @@ public class ReimbursementDAO implements CrudDAO<Reimbursements>{
             conn.setAutoCommit(false);
             PreparedStatement pstmt = conn.prepareStatement("UPDATE ers_reimbursements " +
                     "SET amount = ?, " +
-                    "resolved = ?, " +
+                    "resolved = NULL, " +
                     "description = ?, " +
                     "receipt = NULL, " +
                     "payment_id = ?, " +
@@ -141,12 +141,12 @@ public class ReimbursementDAO implements CrudDAO<Reimbursements>{
                     "status_id = ? " +
                     "WHERE reimb_id = ?");
             pstmt.setDouble(1, updatedReimbursement.getAmount());
-            pstmt.setTimestamp(2, updatedReimbursement.getResolved());
-            pstmt.setString(3, updatedReimbursement.getDescription());
-//            pstmt.setBinaryStream(4, updatedReimbursement.getReceipt().getBinaryStream());
-            pstmt.setString(4, updatedReimbursement.getPayment_id());
-            pstmt.setString(5, updatedReimbursement.getStatus().getStatus());
-            pstmt.setString(6, updatedReimbursement.getReimb_id());
+//            pstmt.setTimestamp(2, updatedReimbursement.getResolved());TODO: implement resolved timestamp
+            pstmt.setString(2, updatedReimbursement.getDescription());
+//            pstmt.setBinaryStream(4, updatedReimbursement.getReceipt().getBinaryStream());TODO: implement receipt and resolver_id
+            pstmt.setString(3, updatedReimbursement.getPayment_id());
+            pstmt.setString(4, updatedReimbursement.getStatus().getStatus());
+            pstmt.setString(5, updatedReimbursement.getReimb_id());
 
 
             // TODO allow role to be updated as well

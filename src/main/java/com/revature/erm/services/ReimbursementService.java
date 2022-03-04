@@ -4,6 +4,7 @@ import com.revature.erm.daos.ReimbursementDAO;
 import com.revature.erm.daos.UsersDAO;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
 import com.revature.erm.dtos.requests.NewUserRequest;
+import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
 import com.revature.erm.models.ReimbursementStatuses;
 import com.revature.erm.models.Reimbursements;
@@ -20,6 +21,7 @@ public class ReimbursementService {
     private ReimbursementDAO reimbursementDAO; // a dependency of ReimbursementService
 
     public ReimbursementService(ReimbursementDAO reimbursementDAO) {
+
         this.reimbursementDAO = reimbursementDAO;
     }
 
@@ -32,5 +34,17 @@ public class ReimbursementService {
         reimbursementDAO.save(newReimbursement);
 
         return new ResourceCreationResponse(newReimbursement.getReimb_id());
+    }
+
+    public ResourceCreationResponse updateReimbursement(UpdateReimbursementRequest updateReimbursementRequest) throws IOException {
+
+        Reimbursements reimbursementToBeUpdated = reimbursementDAO.getById(updateReimbursementRequest.getReimb_id());
+        ReimbursementStatuses reimbursementStatus = new ReimbursementStatuses(updateReimbursementRequest.getStatus(), updateReimbursementRequest.getStatus());
+
+        reimbursementToBeUpdated.setStatus(reimbursementStatus);//set reimbursement to new status
+
+        reimbursementDAO.update(reimbursementToBeUpdated);
+
+        return new ResourceCreationResponse(reimbursementToBeUpdated.getReimb_id());
     }
 }

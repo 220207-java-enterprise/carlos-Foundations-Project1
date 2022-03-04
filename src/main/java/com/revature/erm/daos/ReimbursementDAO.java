@@ -16,11 +16,11 @@ import java.util.List;
 public class ReimbursementDAO implements CrudDAO<Reimbursements>{
 
     private final String rootSelect = "SELECT " +
-            "er.reimb_id, er.amount, er.submitted, er.resolved, er.description, er.receipt, er.payment_id, er.author_id, er.resolver_id, er.status_id, er.type_id, ert.status, ers.type " +
+            "er.reimb_id, er.amount, er.submitted, er.resolved, er.description, er.receipt, er.payment_id, er.author_id, er.resolver_id, er.status_id, er.type_id, ers.status, ert.type " +
             "FROM ers_reimbursements er " +
-            "JOIN ers_reimbursements_types ert " +
+            "JOIN ers_reimbursement_statuses ers " +
             "ON er.status_id = ers.status_id " +
-            "JOIN ers_reimbursements_statuses ers " + //only joined ers_reimbursements with ers_reimbursements_types thus far
+            "JOIN ers_reimbursement_types ert " + //only joined ers_reimbursements with ers_reimbursements_types thus far
             "ON er.type_id = ert.type_id ";//TODO: do we have to join both ers_reimbursements_types AND ers_reimbursements_status???
 
     //-------------------------------save new reimbursement request---------------------------------//
@@ -135,17 +135,19 @@ public class ReimbursementDAO implements CrudDAO<Reimbursements>{
                     "SET amount = ?, " +
                     "resolved = ?, " +
                     "description = ?, " +
-                    "receipt = ?, " +
-                    "payment_id = ? " +
+                    "receipt = NULL, " +
+                    "payment_id = ?, " +
+                    "resolver_id = NULL, " +
                     "status_id = ? " +
                     "WHERE reimb_id = ?");
             pstmt.setDouble(1, updatedReimbursement.getAmount());
             pstmt.setTimestamp(2, updatedReimbursement.getResolved());
             pstmt.setString(3, updatedReimbursement.getDescription());
-            pstmt.setBinaryStream(4, updatedReimbursement.getReceipt().getBinaryStream());
-            pstmt.setString(5, updatedReimbursement.getPayment_id());
-            pstmt.setString(6, updatedReimbursement.getStatus().getStatus_id());
-            pstmt.setString(7, updatedReimbursement.getType().getType_id());
+//            pstmt.setBinaryStream(4, updatedReimbursement.getReceipt().getBinaryStream());
+            pstmt.setString(4, updatedReimbursement.getPayment_id());
+            pstmt.setString(5, updatedReimbursement.getStatus().getStatus());
+            pstmt.setString(6, updatedReimbursement.getReimb_id());
+
 
             // TODO allow role to be updated as well
 

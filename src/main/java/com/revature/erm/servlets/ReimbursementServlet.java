@@ -5,14 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.revature.erm.dtos.requests.LoginRequest;
 import com.revature.erm.dtos.requests.NewReimbursementRequest;
+import com.revature.erm.dtos.requests.UpdateReimbursementRequest;
 import com.revature.erm.dtos.responses.Principal;
 import com.revature.erm.dtos.responses.ResourceCreationResponse;
+import com.revature.erm.models.Reimbursements;
 import com.revature.erm.services.ReimbursementService;
 import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UsersService;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+//import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -84,8 +86,21 @@ public class ReimbursementServlet extends HttpServlet {
                 throw new InvalidRequestException("You are not authorized as an manager. Only managers are able to update reimbursement requests.");
             }
 
+            UpdateReimbursementRequest updateReimbursementRequest = mapper.readValue(req.getInputStream(), UpdateReimbursementRequest.class);
+            ResourceCreationResponse updatedReimbursement = reimbursementService.updateReimbursement(updateReimbursementRequest);
 
+            String payload = mapper.writeValueAsString(updatedReimbursement);
+            resp.setContentType("application/JSON");
+            writer.write(payload);
+
+        } catch (InvalidRequestException | DatabindException e) {
+            e.printStackTrace();
+            resp.setStatus(400);//BAD request(client side error)
+        } catch (AuthenticationException e) {
+            resp.setStatus(401); // UNAUTHORIZED (no user found with provided credentials)
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.setStatus(500);
         }
     }
-
 }

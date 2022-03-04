@@ -2,6 +2,8 @@ package com.revature.erm.dtos.requests;
 
 import com.revature.erm.models.Reimbursements;
 
+import java.util.Objects;
+
 public class UpdateReimbursementRequest {
 
     private String reimb_id;
@@ -42,5 +44,25 @@ public class UpdateReimbursementRequest {
         this.status = status;
     }
 
-    public Reimbursements extractUpdatedReimbursement
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UpdateReimbursementRequest that = (UpdateReimbursementRequest) o;
+        return Objects.equals(reimb_id, that.reimb_id) && Objects.equals(resolver_id, that.resolver_id) && Objects.equals(status, that.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(reimb_id, resolver_id, status);
+    }
+
+    @Override
+    public String toString() {
+        return "UpdateReimbursementRequest{" +
+                "reimb_id='" + reimb_id + '\'' +
+                ", resolver_id='" + resolver_id + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

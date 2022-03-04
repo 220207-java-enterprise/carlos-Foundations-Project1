@@ -9,6 +9,7 @@ public class AppUserResponse {
     private String username;
     private String given_name;
     private String surname;
+    private Boolean is_active;
     private String role_id;
 
     public AppUserResponse() {
@@ -20,6 +21,7 @@ public class AppUserResponse {
         this.username = user.getUsername();
         this.given_name = user.getGiven_name();
         this.surname = user.getSurname();
+        this.is_active = user.getIs_active();
         this.role_id = user.getRole_id().getRole_id();
     }
 
@@ -54,6 +56,10 @@ public class AppUserResponse {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+    public Boolean getIs_Active() { return is_active; }
+
+    public void setIs_Active(Boolean is_active) { this.is_active = is_active; }
 
     public String getRole_id() {
         return role_id;

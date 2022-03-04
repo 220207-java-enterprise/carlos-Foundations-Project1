@@ -33,7 +33,7 @@ public class UserServlet extends HttpServlet {
         this.mapper = mapper;
     }
 
-    //----------------------Send a doGet request(READ request)---------------------//
+    //----------------------get all users(ADMIN ONLY)---------------------//
 
 
     @Override
@@ -67,12 +67,17 @@ public class UserServlet extends HttpServlet {
 
     }
 
-    //----------------------Send a doPost request(CREATE request)---------------------//
+    //----------------------create new user(ADMIN ONLY)---------------------//
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         PrintWriter respWriter = resp.getWriter();
+
+        Principal requester = tokenService.extractRequesterDetails(req.getHeader("Authorization"));
+        if (!requester.getRole().equals("ADMIN")) {
+            resp.setStatus(403); // FORBIDDEN(client side)
+            return;}
 
         try {
 

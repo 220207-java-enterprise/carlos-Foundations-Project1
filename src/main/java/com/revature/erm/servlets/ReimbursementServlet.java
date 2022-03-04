@@ -12,6 +12,7 @@ import com.revature.erm.services.TokenService;
 import com.revature.erm.services.UsersService;
 import com.revature.erm.util.exceptions.AuthenticationException;
 import com.revature.erm.util.exceptions.InvalidRequestException;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,6 +39,7 @@ public class ReimbursementServlet extends HttpServlet {
 //    }
 //
 
+    //-----------------------------create a reimbursement(EMPLOYEE ONLY)--------------------------//
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -67,6 +69,22 @@ public class ReimbursementServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             resp.setStatus(500);
+        }
+    }
+
+    //-----------------------------update a reimbursement(MANAGER ONLY)--------------------------//
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        PrintWriter writer = resp.getWriter();
+
+        try {
+            Principal principal = tokenService.extractRequesterDetails(req.getHeader("Authorization"));//authorize requester
+            if (!principal.getRole().equals("FINANCE_MANAGER")) {//if requester role not equal to FINANCE_MANAGER
+                throw new InvalidRequestException("You are not authorized as an manager. Only managers are able to update reimbursement requests.");
+            }
+
+
         }
     }
 
